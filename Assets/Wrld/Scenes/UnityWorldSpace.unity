@@ -180,7 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbc0e66f90e54b55b68bb4653cd2500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spot: {fileID: 822826907}
+  spot: {fileID: 1546792315}
+  clicked: {fileID: 1546792315}
 --- !u!1 &775668469
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb50190c737b945ddbf9d9a234ee0fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 0}
+  location: {fileID: 0}
 --- !u!1 &1581490406
 GameObject:
   m_ObjectHideFlags: 0
