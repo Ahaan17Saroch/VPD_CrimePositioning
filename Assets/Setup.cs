@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System.IO;
-using System;
 
 namespace Wrld.Space
 {
@@ -12,69 +11,50 @@ namespace Wrld.Space
     public class Setup : MonoBehaviour
     {
         public GameObject spot, clicked; // Representation of Crime spot.
-        List<string> LatitudeList; // Stores the list of latitudes.
-        List<string> LongitudeList; // Stores the list of longitudes.
-        List<string> crime_typeList; // Stores the crime type
+
+
         Hashtable Metadata;
-        
 
         // Read from the file and place the spots when the map is loaded.
         void Start()
         {
+            double latitudePoint;
+            double longitudePoint;
+            LatLong CrimeLatLong = new LatLong();
+            Vector3 point = new Vector3();
 
             int count = 0;
-            using (var reader = new StreamReader(@"Book2.csv"))
+            using (var reader = new StreamReader(@"Crime_Data.csv"))
             {
-                LatitudeList = new List<string>();
-                LongitudeList = new List<string>();
-                crime_typeList = new List<string>();
+                System.IO.StreamWriter writer;
+                writer = new System.IO.StreamWriter("MetaData.txt"); // Dor storing the data related to crime.
 
                 while (!reader.EndOfStream)
                 {
-                    //Debug.Log(count);
-
                     var line = reader.ReadLine();
                     var values = line.Split(',');
 
                     if (count > 0) // The first row is the name of the columns.
                     {
-                        LatitudeList.Add(values[0]);
-                        LongitudeList.Add(values[1]);
-                        crime_typeList.Add(values[2]);
+
+                        double.TryParse(values[0], out latitudePoint);
+                        double.TryParse(values[1], out longitudePoint);
+
+                        CrimeLatLong.SetLatitude(latitudePoint);
+                        CrimeLatLong.SetLongitude(longitudePoint);
+
+                        point = Api.Instance.SpacesApi.GeographicToWorldPoint(CrimeLatLong); //Convert latitude and longitude to the loacal space in Unity.
+                        point.y = 10;
+
+                        GameObject clone = Instantiate(spot, point, transform.rotation);                       
+                        writer.Write(clone.GetInstanceID() + " " + values[2] + "\n");
+                                               
                     }
-                    count++;            
+                    count++;
                 }
+                writer.Close();
             }
 
-            double latitudePoint, longitudePoint;
-            string crime_type;
-
-            LatLong CrimeLatLong = new LatLong();
-            Vector3 point = new Vector3();
-            for (int i = 0; i < count - 1; i++)
-            {
-
-                double.TryParse(LatitudeList[i], out latitudePoint);
-                double.TryParse(LongitudeList[i], out longitudePoint);
-                crime_type = crime_typeList[i];
-
-                //Debug.Log(crime_type);
-
-                CrimeLatLong.SetLatitude(latitudePoint);
-                CrimeLatLong.SetLongitude(longitudePoint);
-
-                point = Api.Instance.SpacesApi.GeographicToWorldPoint(CrimeLatLong); //Convert latitude and longitude to the loacal space in Unity.
-
-                point.y = 10;
-
-                GameObject clone = Instantiate(spot, point, transform.rotation);
-
-            }
-        }
-
-        private void OnMouseDown()
-        {
-            Debug.Log("Ok");
         }
     }
 }
