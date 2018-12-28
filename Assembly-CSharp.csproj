@@ -64,6 +64,7 @@
     <Compile Include="Assets\CrimeRelateData.cs" />
     <Compile Include="Assets\Setup.cs" />
     <Compile Include="Assets\Spot.cs" />
+    <Compile Include="Assets\SQLite.cs" />
     <Compile Include="Assets\Wrld\API\Api.cs" />
     <Compile Include="Assets\Wrld\API\WrldMap.cs" />
     <Compile Include="Assets\Wrld\Demo\Buildings\Scripts\BuildingAltitudePicking.cs" />
